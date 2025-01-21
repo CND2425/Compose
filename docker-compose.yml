@@ -1,0 +1,89 @@
+services:
+  nginx:
+    network_mode: host
+    image: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ./microservices/mongo-init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  order_service:
+    image: order-service
+    environment:
+      MONGODB_URL: "mongodb://mongodb:27017"
+      RABBITMQ_URL: rabbitmq
+    build:
+      context: ./microservices/order_service
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8080"
+
+  product_service:
+    image: product-service
+    environment:
+      MONGODB_URL: "mongodb://mongodb:27017"
+    build:
+      context: ./microservices/product_service
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8001:8080"
+
+  inventory_service:
+    image: inventory-service
+    environment:
+      MONGODB_URL: "mongodb://mongodb:27017"
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
+    build:
+      context: microservices/inventory_service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8005:8005"
+    depends_on:
+      - mongodb
+      - rabbitmq
+
+
+  user_service:
+    image: user-service
+    environment:
+      APP_PORT: "8003"
+      MONGODB_URL: "mongodb://mongodb:27017"
+    build:
+      context: microservices/user_service
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8003:8003"
+
+volumes:
+  mongodb_data:

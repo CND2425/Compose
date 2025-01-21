@@ -90,10 +90,6 @@ Dieses Projekt stellt eine rudimentäre E-Commerce-Plattform bereit, die auf ein
 - **MongoDB-Daten**: Persistiert im Docker-Volume `mongodb_data`.
 - **MongoDB-Initialisierung**: Skripte im Ordner `./microservices/mongo-init` werden beim Start ausgeführt.
 
-## Lizenz
-
-Dieses Projekt steht unter der [MIT-Lizenz](https://opensource.org/licenses/MIT).
-
 ---
 
 Erstellt: 15.01.2025

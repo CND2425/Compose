@@ -73,7 +73,6 @@ services:
       - mongodb
       - rabbitmq
 
-
   user_service:
     image: ghcr.io/cnd2425/user-service:latest
     environment:

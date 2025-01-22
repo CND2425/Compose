@@ -8,6 +8,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
 
   frontend:
+    image: ghcr.io/cnd2425/frontend:latest
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
@@ -21,7 +22,7 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-      - ./microservices/mongo-init:/docker-entrypoint-initdb.d
+      - ./mongo-init:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
   rabbitmq:
@@ -35,7 +36,7 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
 
   order_service:
-    image: order-service
+    image: ghcr.io/cnd2425/order-service:latest
     environment:
       MONGODB_URL: "mongodb://mongodb:27017"
       RABBITMQ_URL: rabbitmq
@@ -47,7 +48,7 @@ services:
       - "8000:8080"
 
   product_service:
-    image: product-service
+    image: ghcr.io/cnd2425/product-service:latest
     environment:
       MONGODB_URL: "mongodb://mongodb:27017"
     build:
@@ -58,7 +59,7 @@ services:
       - "8001:8080"
 
   inventory_service:
-    image: inventory-service
+    image: ghcr.io/cnd2425/inventory-service:latest
     environment:
       MONGODB_URL: "mongodb://mongodb:27017"
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
@@ -74,7 +75,7 @@ services:
 
 
   user_service:
-    image: user-service
+    image: ghcr.io/cnd2425/user-service:latest
     environment:
       APP_PORT: "8003"
       MONGODB_URL: "mongodb://mongodb:27017"

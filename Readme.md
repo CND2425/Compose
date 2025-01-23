@@ -11,14 +11,14 @@ Diese Anwendung ist eine Microservices-basierte E-Commerce-Plattform, die versch
 ### Schritte
 1. Repository klonen:
    ```bash
-   git clone <REPOSITORY_URL>
+   git clone [<REPOSITORY_URL>](https://github.com/CND2425/Compose.git)
    cd Compose-main
    ```
 2. Services starten:
    ```bash
    docker-compose up -d
    ```
-3. Anwendung öffnen: [http://localhost](http://localhost)
+3. Anwendung öffnen: [http://localhost](http://localhost:3000)
 
 ### Dienste und Ports
 | Service             | Port   |

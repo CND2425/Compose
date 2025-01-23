@@ -12,7 +12,7 @@ Diese Anwendung ist eine Microservices-basierte E-Commerce-Plattform, die versch
 1. Repository klonen:
    ```bash
    git clone https://github.com/CND2425/Compose.git
-   cd Compose-main
+   cd Compose
    ```
 2. Services starten:
    ```bash
